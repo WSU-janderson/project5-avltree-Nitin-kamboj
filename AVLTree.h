@@ -4,7 +4,9 @@
 
 #ifndef AVLTREE_H
 #define AVLTREE_H
+#include <optional>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -30,16 +32,34 @@ protected:
         // number of hops to deepest leaf node
         size_t getHeight() const;
 
+        AVLNode (const KeyType& k, const ValueType& v);
 
     };
 
 public:
-
+    AVLTree();
+    AVLTree(const KeyType& key, const ValueType& value);
+    //INSERT
+    bool insert(const string& key, size_t value);
+    //REMOVE
+    bool remove(const string& key);
+    //CONTAINS
+    bool contains(const string& key);
+    //GET
+    optional< size_t> get(string& key);
+    //[] operator
+    string& operator[](const size_t& key);
+    //KEYS
+    vector<string> keys() const;
+    size_t size() const;
+    size_t  getHeight() const;
+    void operator=(const AVLTree& other);
+    friend ostream& operator<<(ostream& os, const AVLTree& avlTree);
 
 
 
     private:
-    AVLNode* root;
+    AVLNode* root ;
 
     /* Helper methods for remove */
     // this overloaded remove will do the recursion to remove the node
@@ -48,6 +68,7 @@ public:
     bool removeNode(AVLNode*& current);
     // You will implement this, but it is needed for removeNode()
     void balanceNode(AVLNode*& node);
+
 
 };
 
