@@ -1,5 +1,5 @@
 #include "AVLTree.h"
-
+#include <iostream>
 #include <string>
 
 size_t AVLTree::AVLNode::numChildren() const {
@@ -168,4 +168,65 @@ optional<size_t> AVLTree::get(string &key) {
         }
     }
     return std::nullopt;
+}
+size_t &AVLTree::operator[](const string &key) {
+    AVLNode* current = root;
+    while (current != nullptr) {
+        if (current->key == key) {
+            return current->value;
+        }
+        if (key > (current)->key) {
+            current = current->right;
+        }
+        else if (key < (current)->key) {
+            current = current->left;
+        }
+    }
+    throw std::runtime_error("Key not found in AVLTree");
+}
+
+vector<string> AVLTree::findRange(const KeyType &lowKey, const KeyType &highKey) {
+    AVLNode* current = root;
+    vector<string> keys;
+    while (current != nullptr) {
+        if (current->key == lowKey) {
+            findRangeKeys(current, highKey, keys);
+            return keys;
+        }
+        if (lowKey > (current)->key && highKey < (current)->key) {
+            current = current->right;
+        }
+        else if (lowKey < (current)->key) {
+            current = current->left;
+        }
+    }
+    return keys;
+}
+
+void AVLTree::findRangeKeys(AVLNode* rootKey, const KeyType &highKey, vector<KeyType> &keys) {
+    if (rootKey->key > highKey) {
+        return;
+    }
+    findRangeKeys(rootKey->left, highKey, keys);
+    if (rootKey->key < highKey) {
+        keys.push_back(rootKey->key);
+    }
+    findRangeKeys(rootKey->right, highKey, keys);
+}
+
+
+
+vector<string> AVLTree::keys() const {
+    AVLNode* current = root;
+    vector<string> keys ;
+    findAllKeys(current, keys);
+    return keys;
+}
+void AVLTree::findAllKeys(AVLNode* current, vector<string>& keys) const {
+    if (current == nullptr) {
+        return;
+    }
+    findAllKeys(current->left, keys);
+    keys.push_back(current->key);
+    findAllKeys(current->right, keys);
 }

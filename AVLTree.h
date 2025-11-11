@@ -48,9 +48,12 @@ public:
     //GET
     optional< size_t> get(string& key);
     //[] operator
-    string& operator[](const size_t& key);
+    size_t& operator[](const string& key);
     //KEYS
+    vector<string> findRange(const KeyType& lowKey, const KeyType& highKey);
+    void findRangeKeys(AVLNode* rootKey, const KeyType& highKey, vector<KeyType>& keys);
     vector<string> keys() const;
+    void findAllKeys(AVLNode* root, vector<string>& keys) const;
     size_t size() const;
     size_t  getHeight() const;
     void operator=(const AVLTree& other);

@@ -36,6 +36,12 @@ int main() {
     removeResult = tree.remove("F");
     cout << removeResult << endl;
     cout << endl << endl;
+    int value = tree["K"];
+    cout << value << endl;
+    tree["K"] = 70;
+    cout << tree["K"] << endl;
+    value = tree["K"];
+    cout << value << endl;
     // cout << tree << endl;
     //
     // insertResult = tree.insert("C", 'C');
