@@ -270,3 +270,16 @@ void AVLTree::findAllKeys(AVLNode* current, vector<string>& keys) const {
 void AVLTree::operator=(const AVLTree &other) {
 
 }
+ostream& operator<<(ostream& os, const AVLTree& avlTree) {
+    avlTree.print(os, avlTree.root);
+    return os;
+}
+void AVLTree::print(ostream &os, AVLNode *current) const {
+    if (current->right == nullptr) {
+        return;
+    }
+    print(os, current->right);
+    os <<"{" << current->key<<":"<<current->value << "}";
+    if (current->left != nullptr)
+    print(os, current->left);
+}

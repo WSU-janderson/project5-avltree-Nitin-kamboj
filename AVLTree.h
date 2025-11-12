@@ -4,6 +4,7 @@
 
 #ifndef AVLTREE_H
 #define AVLTREE_H
+#include <iostream>
 #include <optional>
 #include <string>
 #include <vector>
@@ -59,6 +60,7 @@ public:
     // size_t  getHeight() const;
     void operator=(const AVLTree& other);
     friend ostream& operator<<(ostream& os, const AVLTree& avlTree);
+    void print(ostream& os , AVLNode* current) const;
 
 
 
