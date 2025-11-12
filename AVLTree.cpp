@@ -20,7 +20,23 @@ bool AVLTree::AVLNode::isLeaf() const {
 }
 
 size_t AVLTree::AVLNode::getHeight() const {
+    if(left == nullptr && right == nullptr) {
     return 0;
+    }
+        if(left == nullptr){
+         int rightHeight = right->getHeight();
+         return rightHeight + 1;
+    }
+        if(right == nullptr){
+        int leftHeight = left->getHeight();
+        return leftHeight + 1;
+}
+else {
+     int leftHeight = left->getHeight();
+    int rightHeight = right->getHeight();
+
+    return max(leftHeight , rightHeight) + 1;
+}
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
@@ -97,8 +113,13 @@ void AVLTree::balanceNode(AVLNode *&node) {
 AVLTree::AVLTree() {
     root = nullptr;
     }
-AVLTree::AVLNode::AVLNode(const KeyType& k, const ValueType& v)
-    : key(k), value(v), height(1), left(nullptr), right(nullptr) {}
+AVLTree::AVLNode::AVLNode(const KeyType& k, const ValueType& v) {
+    key = k;
+    value = v;
+    height = 1;
+    left = nullptr;
+    right = nullptr;
+}
 
 
 
