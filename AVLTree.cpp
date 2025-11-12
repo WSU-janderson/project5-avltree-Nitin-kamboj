@@ -24,18 +24,13 @@ size_t AVLTree::AVLNode::getHeight() const {
     return 0;
     }
         if(left == nullptr){
-         int rightHeight = right->getHeight();
-         return rightHeight + 1;
+         return right->height + 1;
     }
         if(right == nullptr){
-        int leftHeight = left->getHeight();
-        return leftHeight + 1;
+        return left->height + 1;
 }
 else {
-     int leftHeight = left->getHeight();
-    int rightHeight = right->getHeight();
-
-    return max(leftHeight , rightHeight) + 1;
+    return max(left->height , right->height) + 1;
 }
 }
 
@@ -96,14 +91,19 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
     }
         if (current->key == key) {
            bool found = removeNode(current);
+            if (current)
+            current->height = current->getHeight();
             return found;
         }
         if (key > (current)->key) {
            bool found = remove(current->right, key);
+            if (current)
+            current->height = current->getHeight();
             return found;
         }
         if (key < (current)->key) {
            bool found = remove(current->left, key);
+            current->height = current->getHeight();
             return found;
         }
 }
@@ -116,7 +116,7 @@ AVLTree::AVLTree() {
 AVLTree::AVLNode::AVLNode(const KeyType& k, const ValueType& v) {
     key = k;
     value = v;
-    height = 1;
+    height = 0;
     left = nullptr;
     right = nullptr;
 }
@@ -133,27 +133,42 @@ bool AVLTree::insert(const string& key, size_t value) {
         root = new AVLNode(key, value);
         return true;
     }
-    AVLNode* current = root;
-    while (true) {
-        if (current->key == key) {
-            return false;
+       if ( insertKey(key, value, root)) {
+           return true;
+       }
+    return false;
+}
+bool AVLTree::insertKey(const KeyType &key, const ValueType &value, AVLNode *current) {
+    if (current->key == key) {
+        return false;
+    }
+    if (key > current->key) {
+        if (current->right == nullptr) {
+            current->right = new AVLNode(key, value);
+            current->height = current->getHeight();
+            balanceNode(current);
+            return true;
         }
-        if (key > current->key) {
-            if (current->right == nullptr) {
-                current->right = new AVLNode(key, value);
-                return true;
-            }
-            current = current->right;
+        if ( insertKey(key, value, current->right)) {
+            current->height = current->getHeight();
+            return true;
         }
-        else if (key < current->key) {
-            if (current->left == nullptr) {
-                current->left = new AVLNode(key,value);
-                return true;
-            }
-            current = current->left;
+        return false;
+    }
+    else if (key < current->key) {
+        if (current->left == nullptr) {
+            current->left = new AVLNode(key,value);
+            // current->height = max(current->left->height, current->right->height) + 1;
+            current->height = current->getHeight();
+            balanceNode(current);
+            return true;
         }
+        insertKey(key, value, current->left);
+        current->height = current->getHeight();
+        return true;
     }
 }
+
 bool AVLTree::remove(const string &key) {
             if (remove(root, key)) {
                 return true;
@@ -250,4 +265,8 @@ void AVLTree::findAllKeys(AVLNode* current, vector<string>& keys) const {
     findAllKeys(current->left, keys);
     keys.push_back(current->key);
     findAllKeys(current->right, keys);
+}
+
+void AVLTree::operator=(const AVLTree &other) {
+
 }

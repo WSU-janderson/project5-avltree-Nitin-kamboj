@@ -41,6 +41,7 @@ public:
     AVLTree(const KeyType& key, const ValueType& value);
     //INSERT
     bool insert(const string& key, size_t value);
+    bool insertKey(const KeyType& key, const ValueType& value, AVLNode* node);
     //REMOVE
     bool remove(const string& key);
     //CONTAINS
@@ -55,7 +56,7 @@ public:
     vector<string> keys() const;
     void findAllKeys(AVLNode* root, vector<string>& keys) const;
     size_t size() const;
-    size_t  getHeight() const;
+    // size_t  getHeight() const;
     void operator=(const AVLTree& other);
     friend ostream& operator<<(ostream& os, const AVLTree& avlTree);
 
