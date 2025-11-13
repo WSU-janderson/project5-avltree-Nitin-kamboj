@@ -42,8 +42,6 @@ public:
     ~AVLTree();
     void clear(AVLNode*& node);
 
-
-
     AVLTree(const KeyType& key, const ValueType& value);
     AVLTree(const AVLTree &other);
     void copyTree(AVLNode* node) ;
@@ -59,12 +57,12 @@ public:
     //[] operator
     size_t& operator[](const string& key);
     //KEYS
-    vector<string> findRange(const KeyType& lowKey, const KeyType& highKey);
-    void findRangeKeys(AVLNode* rootKey, const KeyType& highKey, vector<KeyType>& keys);
+    vector<size_t> findRange(const KeyType& lowKey, const KeyType& highKey);
+    void findRangeKeys(AVLNode* rootKey, const KeyType& highKey,const KeyType& lowKey, vector<ValueType>& keys);
     vector<string> keys() const;
     void findAllKeys(AVLNode* root, vector<string>& keys) const;
     size_t size() const;
-    size_t getheight() const;
+    size_t getHeight() const;
     // size_t  getHeight() const;
     void operator=(const AVLTree& other);
     friend ostream& operator<<(ostream& os, const AVLTree& avlTree);

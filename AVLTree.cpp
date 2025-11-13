@@ -112,66 +112,66 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 }
 
 void AVLTree::balanceNode(AVLNode *&node) {
-    int lheight;
-    int rheight;
-    int llheight;
-    int lrheight;
-    int rlheight;
-    int rrheight;
-    if (node->left != nullptr) {
-        lheight = node->left->height;
-        if (node->left->left != nullptr) {
-            llheight = node->left->left->height;
-        }
-        else {
-            llheight = -1;
-        }
-        if (node->left->right != nullptr) {
-            lrheight = node->left->right->height;
-        }
-        else {
-            lrheight = -1;
-        }
-    }
-    else {
-        lheight = -1;
-        llheight = -1;
-        lrheight = -1;
-    }
-    if (node->right != nullptr) {
-        rheight = node->right->height;
-        if (node->right->left != nullptr) {
-            rlheight = node->right->left->height;
-        }
-        else {
-            rlheight = -1;
-        }
-        if (node->right->right != nullptr) {
-            rrheight = node->right->right->height;
-        }
-        else {
-            rrheight = -1;
-        }
-    }
-    else {
-        rheight = -1;
-        rlheight = -1;
-        rrheight = -1;
-    }
-
-
-        if (lheight - rheight > 1 ) {
-            if (llheight - lrheight == -1 ) {
-                rotateLeft(node->left);
-            }
-            rotateRight(node);
-        }
-        else if (lheight - rheight < -1) {
-            if (rlheight - rrheight == 1 ) {
-                rotateRight(node->right);
-            }
-            rotateLeft(node);
-    }
+    // int lheight;
+    // int rheight;
+    // int llheight;
+    // int lrheight;
+    // int rlheight;
+    // int rrheight;
+    // if (node->left != nullptr) {
+    //     lheight = node->left->height;
+    //     if (node->left->left != nullptr) {
+    //         llheight = node->left->left->height;
+    //     }
+    //     else {
+    //         llheight = -1;
+    //     }
+    //     if (node->left->right != nullptr) {
+    //         lrheight = node->left->right->height;
+    //     }
+    //     else {
+    //         lrheight = -1;
+    //     }
+    // }
+    // else {
+    //     lheight = -1;
+    //     llheight = -1;
+    //     lrheight = -1;
+    // }
+    // if (node->right != nullptr) {
+    //     rheight = node->right->height;
+    //     if (node->right->left != nullptr) {
+    //         rlheight = node->right->left->height;
+    //     }
+    //     else {
+    //         rlheight = -1;
+    //     }
+    //     if (node->right->right != nullptr) {
+    //         rrheight = node->right->right->height;
+    //     }
+    //     else {
+    //         rrheight = -1;
+    //     }
+    // }
+    // else {
+    //     rheight = -1;
+    //     rlheight = -1;
+    //     rrheight = -1;
+    // }
+    //
+    //
+    //     if (lheight - rheight > 1 ) {
+    //         if (llheight - lrheight == -1 ) {
+    //             rotateLeft(node->left);
+    //         }
+    //         rotateRight(node);
+    //     }
+    //     else if (lheight - rheight < -1) {
+    //         if (rlheight - rrheight == 1 ) {
+    //             rotateRight(node->right);
+    //         }
+    //         rotateLeft(node);
+    // }
 }
 void AVLTree::rotateLeft(AVLNode *&node) {
     AVLNode* problemNode = node;
@@ -306,33 +306,22 @@ size_t &AVLTree::operator[](const string &key) {
     throw std::runtime_error("Key not found in AVLTree");
 }
 
-vector<string> AVLTree::findRange(const KeyType &lowKey, const KeyType &highKey) {
-    AVLNode* current = root;
-    vector<string> keys;
-    while (current != nullptr) {
-        if (current->key == lowKey) {
-            findRangeKeys(current, highKey, keys);
-            return keys;
-        }
-        if (lowKey > (current)->key && highKey < (current)->key) {
-            current = current->right;
-        }
-        else if (lowKey < (current)->key) {
-            current = current->left;
-        }
-    }
+vector<size_t> AVLTree::findRange(const KeyType &lowKey, const KeyType &highKey) {
+    vector<size_t> keys;
+    findRangeKeys(root,highKey,lowKey,keys);
     return keys;
 }
 
-void AVLTree::findRangeKeys(AVLNode* rootKey, const KeyType &highKey, vector<KeyType> &keys) {
-    if (rootKey->key > highKey) {
+void AVLTree::findRangeKeys(AVLNode* rootKey, const KeyType &highKey,const KeyType &lowkey, vector<ValueType> &keys) {
+    if (rootKey == nullptr) {
         return;
     }
-    findRangeKeys(rootKey->left, highKey, keys);
-    if (rootKey->key < highKey) {
-        keys.push_back(rootKey->key);
+    findRangeKeys(rootKey->left, highKey, lowkey, keys);
+    if (rootKey->key <= highKey && rootKey->key >= lowkey) {
+        keys.push_back(rootKey->value);
     }
-    findRangeKeys(rootKey->right, highKey, keys);
+    findRangeKeys(rootKey->right, highKey, lowkey, keys);
+
 }
 
 
@@ -396,6 +385,6 @@ void AVLTree::clear(AVLNode *&node) {
     clear(node->right);
     delete node;
 }
-size_t AVLTree::getheight() const {
+size_t AVLTree::getHeight() const {
     return root->height;
 }
