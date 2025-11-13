@@ -97,17 +97,17 @@ int main() {
     containsResult = tree.contains("N"); // false
     cout << containsResult << endl;
     // get
-    // optional<int> getResult;
-    //
-    // getResult = tree.get("A"); // 65
-    // cout << "A: " << getResult.value() << endl;
-    //
-    // getResult = tree.get("C"); // 67
-    // cout << "C: " << getResult.value() << endl;
-    //
-    // getResult = tree.get("Q"); // getResult has no value
-    // cout << "Q: " << getResult.has_value() << endl; // print 0
-    // cout << endl;
+    optional<int> getResult;
+
+    getResult = tree.get("A"); // 65
+    cout << "A: " << getResult.value() << endl;
+
+    getResult = tree.get("C"); // 67
+    cout << "C: " << getResult.value() << endl;
+
+    getResult = tree.get("Q"); // getResult has no value
+    cout << "Q: " << getResult.has_value() << endl; // print 0
+    cout << endl;
 
     // findRange
     vector<size_t> rangeTest = tree.findRange("D", "W");

@@ -53,7 +53,7 @@ public:
     //CONTAINS
     bool contains(const string& key);
     //GET
-    optional< size_t> get(string& key);
+    optional< size_t> get(const string& key);
     //[] operator
     size_t& operator[](const string& key);
     //KEYS

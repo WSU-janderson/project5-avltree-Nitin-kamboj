@@ -112,70 +112,73 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 }
 
 void AVLTree::balanceNode(AVLNode *&node) {
-    // int lheight;
-    // int rheight;
-    // int llheight;
-    // int lrheight;
-    // int rlheight;
-    // int rrheight;
-    // if (node->left != nullptr) {
-    //     lheight = node->left->height;
-    //     if (node->left->left != nullptr) {
-    //         llheight = node->left->left->height;
-    //     }
-    //     else {
-    //         llheight = -1;
-    //     }
-    //     if (node->left->right != nullptr) {
-    //         lrheight = node->left->right->height;
-    //     }
-    //     else {
-    //         lrheight = -1;
-    //     }
-    // }
-    // else {
-    //     lheight = -1;
-    //     llheight = -1;
-    //     lrheight = -1;
-    // }
-    // if (node->right != nullptr) {
-    //     rheight = node->right->height;
-    //     if (node->right->left != nullptr) {
-    //         rlheight = node->right->left->height;
-    //     }
-    //     else {
-    //         rlheight = -1;
-    //     }
-    //     if (node->right->right != nullptr) {
-    //         rrheight = node->right->right->height;
-    //     }
-    //     else {
-    //         rrheight = -1;
-    //     }
-    // }
-    // else {
-    //     rheight = -1;
-    //     rlheight = -1;
-    //     rrheight = -1;
-    // }
-    //
-    //
-    //     if (lheight - rheight > 1 ) {
-    //         if (llheight - lrheight == -1 ) {
-    //             rotateLeft(node->left);
-    //         }
-    //         rotateRight(node);
-    //     }
-    //     else if (lheight - rheight < -1) {
-    //         if (rlheight - rrheight == 1 ) {
-    //             rotateRight(node->right);
-    //         }
-    //         rotateLeft(node);
-    // }
+    int lheight;
+    int rheight;
+    int llheight;
+    int lrheight;
+    int rlheight;
+    int rrheight;
+    if (node->left != nullptr) {
+        lheight = node->left->height;
+        if (node->left->left != nullptr) {
+            llheight = node->left->left->height;
+        }
+        else {
+            llheight = -1;
+        }
+        if (node->left->right != nullptr) {
+            lrheight = node->left->right->height;
+        }
+        else {
+            lrheight = -1;
+        }
+    }
+    else {
+        lheight = -1;
+        llheight = -1;
+        lrheight = -1;
+    }
+    if (node->right != nullptr) {
+        rheight = node->right->height;
+        if (node->right->left != nullptr) {
+            rlheight = node->right->left->height;
+        }
+        else {
+            rlheight = -1;
+        }
+        if (node->right->right != nullptr) {
+            rrheight = node->right->right->height;
+        }
+        else {
+            rrheight = -1;
+        }
+    }
+    else {
+        rheight = -1;
+        rlheight = -1;
+        rrheight = -1;
+    }
+
+
+        if (lheight - rheight > 1 ) {
+            if (llheight - lrheight < 0 ) {
+                rotateLeft(node->left);
+            }
+            rotateRight(node);
+        }
+        else if (lheight - rheight < -1) {
+            if (rlheight - rrheight > 0 ) {
+                rotateRight(node->right);
+            }
+            rotateLeft(node);
+    }
 }
 void AVLTree::rotateLeft(AVLNode *&node) {
     AVLNode* problemNode = node;
     AVLNode*& hook = node->right;
+    node->key = hook->key;
+    node->value = hook->value;
+    node->right = hook->left;
     // AVLNode* temp = node;
     node = hook;
     node->right = problemNode;
@@ -183,9 +186,11 @@ void AVLTree::rotateLeft(AVLNode *&node) {
 void AVLTree::rotateRight(AVLNode *&node) {
     AVLNode* problemNode = node;
     AVLNode*& hook = node->left;
-    node->right = hook->right;
-    hook->right = problemNode;
-    hook = node;
+    node->key = hook->key;
+    node->value = hook->value;
+    node->left = hook->left;
+    node->right = problemNode;
+    delete hook;
     // node = hook;
     // node->left = problemNode;
 }
@@ -275,7 +280,7 @@ bool AVLTree::contains(const string &key) {
     }
     return false;
 }
-optional<size_t> AVLTree::get(string &key) {
+optional<size_t> AVLTree::get(const string &key) {
     AVLNode* current = root;
     while (current != nullptr) {
         if (current->key == key) {
