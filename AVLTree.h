@@ -40,6 +40,10 @@ protected:
 public:
     AVLTree();
     ~AVLTree();
+    void clear(AVLNode*& node);
+
+
+
     AVLTree(const KeyType& key, const ValueType& value);
     AVLTree(const AVLTree &other);
     void copyTree(AVLNode* node) ;
@@ -60,6 +64,7 @@ public:
     vector<string> keys() const;
     void findAllKeys(AVLNode* root, vector<string>& keys) const;
     size_t size() const;
+    size_t getheight() const;
     // size_t  getHeight() const;
     void operator=(const AVLTree& other);
     friend ostream& operator<<(ostream& os, const AVLTree& avlTree);

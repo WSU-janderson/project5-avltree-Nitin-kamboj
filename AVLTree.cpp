@@ -54,11 +54,13 @@ bool AVLTree::removeNode(AVLNode*& current){
                 root = current->right;
             }
             current = current->right;
+            balanceNode(current);
         } else {
             if (current == root) {
                 root = current->left;
             }
             current = current->left;
+            balanceNode(current);
         }
     } else {
         // case 3 - we have two children,
@@ -118,40 +120,45 @@ void AVLTree::balanceNode(AVLNode *&node) {
     int rrheight;
     if (node->left != nullptr) {
         lheight = node->left->height;
+        if (node->left->left != nullptr) {
+            llheight = node->left->left->height;
+        }
+        else {
+            llheight = -1;
+        }
+        if (node->left->right != nullptr) {
+            lrheight = node->left->right->height;
+        }
+        else {
+            lrheight = -1;
+        }
     }
     else {
         lheight = -1;
+        llheight = -1;
+        lrheight = -1;
     }
     if (node->right != nullptr) {
         rheight = node->right->height;
+        if (node->right->left != nullptr) {
+            rlheight = node->right->left->height;
+        }
+        else {
+            rlheight = -1;
+        }
+        if (node->right->right != nullptr) {
+            rrheight = node->right->right->height;
+        }
+        else {
+            rrheight = -1;
+        }
     }
     else {
         rheight = -1;
-    }
-    if (node->left->left != nullptr) {
-        llheight = node->left->left->height;
-    }
-    else {
-        llheight = -1;
-    }
-    if (node->left->right != nullptr) {
-        lrheight = node->left->right->height;
-    }
-    else {
-        lrheight = -1;
-    }
-    if (node->right->left != nullptr) {
-        rlheight = node->right->left->height;
-    }
-    else {
         rlheight = -1;
-    }
-    if (node->right->right != nullptr) {
-        rrheight = node->right->right->height;
-    }
-    else {
         rrheight = -1;
     }
+
 
         if (lheight - rheight > 1 ) {
             if (llheight - lrheight == -1 ) {
@@ -167,16 +174,20 @@ void AVLTree::balanceNode(AVLNode *&node) {
     }
 }
 void AVLTree::rotateLeft(AVLNode *&node) {
-    // AVLNode* problemNode = node;
-    AVLNode* hook = node->right;
+    AVLNode* problemNode = node;
+    AVLNode*& hook = node->right;
     // AVLNode* temp = node;
     node = hook;
-    hook->right = node;
+    node->right = problemNode;
 }
 void AVLTree::rotateRight(AVLNode *&node) {
-    AVLNode* hook = node->left;
-    node = hook;
-    node->left = node;
+    AVLNode* problemNode = node;
+    AVLNode*& hook = node->left;
+    node->right = hook->right;
+    hook->right = problemNode;
+    hook = node;
+    // node = hook;
+    // node->left = problemNode;
 }
 AVLTree::AVLTree() {
     root = nullptr;
@@ -222,6 +233,7 @@ bool AVLTree::insertKey(const KeyType &key, const ValueType &value, AVLNode *cur
         }
         if ( insertKey(key, value, current->right)) {
             current->height = current->getHeight();
+            balanceNode(current);
             return true;
         }
         return false;
@@ -236,6 +248,7 @@ bool AVLTree::insertKey(const KeyType &key, const ValueType &value, AVLNode *cur
         }
         insertKey(key, value, current->left);
         current->height = current->getHeight();
+        balanceNode(current);
         return true;
     }
 }
@@ -369,4 +382,20 @@ void AVLTree::copyTree(AVLNode *node)  {
 }
 void AVLTree::operator=(const AVLTree &other) {
     copyTree(other.root);
+}
+AVLTree::~AVLTree() {
+    clear(root);
+    root = nullptr;
+    size_ = 0;
+}
+void AVLTree::clear(AVLNode *&node) {
+    if (node == nullptr) {
+        return;
+    }
+    clear(node->left);
+    clear(node->right);
+    delete node;
+}
+size_t AVLTree::getheight() const {
+    return root->height;
 }
