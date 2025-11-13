@@ -39,7 +39,10 @@ protected:
 
 public:
     AVLTree();
+    ~AVLTree();
     AVLTree(const KeyType& key, const ValueType& value);
+    AVLTree(const AVLTree &other);
+    void copyTree(AVLNode* node) ;
     //INSERT
     bool insert(const string& key, size_t value);
     bool insertKey(const KeyType& key, const ValueType& value, AVLNode* node);
@@ -64,8 +67,10 @@ public:
 
 
 
+
     private:
     AVLNode* root ;
+    int size_;
 
     /* Helper methods for remove */
     // this overloaded remove will do the recursion to remove the node
@@ -74,6 +79,10 @@ public:
     bool removeNode(AVLNode*& current);
     // You will implement this, but it is needed for removeNode()
     void balanceNode(AVLNode*& node);
+    void rotateLeft(AVLNode*& node);
+    void rotateRight(AVLNode*& node);
+
+
 
 
 };

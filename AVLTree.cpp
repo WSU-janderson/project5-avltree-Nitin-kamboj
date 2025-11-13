@@ -34,6 +34,7 @@ else {
 }
 }
 
+
 bool AVLTree::removeNode(AVLNode*& current){
     if (!current) {
         return false;
@@ -109,9 +110,77 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 }
 
 void AVLTree::balanceNode(AVLNode *&node) {
+    int lheight;
+    int rheight;
+    int llheight;
+    int lrheight;
+    int rlheight;
+    int rrheight;
+    if (node->left != nullptr) {
+        lheight = node->left->height;
+    }
+    else {
+        lheight = -1;
+    }
+    if (node->right != nullptr) {
+        rheight = node->right->height;
+    }
+    else {
+        rheight = -1;
+    }
+    if (node->left->left != nullptr) {
+        llheight = node->left->left->height;
+    }
+    else {
+        llheight = -1;
+    }
+    if (node->left->right != nullptr) {
+        lrheight = node->left->right->height;
+    }
+    else {
+        lrheight = -1;
+    }
+    if (node->right->left != nullptr) {
+        rlheight = node->right->left->height;
+    }
+    else {
+        rlheight = -1;
+    }
+    if (node->right->right != nullptr) {
+        rrheight = node->right->right->height;
+    }
+    else {
+        rrheight = -1;
+    }
+
+        if (lheight - rheight > 1 ) {
+            if (llheight - lrheight == -1 ) {
+                rotateLeft(node->left);
+            }
+            rotateRight(node);
+        }
+        else if (lheight - rheight < -1) {
+            if (rlheight - rrheight == 1 ) {
+                rotateRight(node->right);
+            }
+            rotateLeft(node);
+    }
+}
+void AVLTree::rotateLeft(AVLNode *&node) {
+    // AVLNode* problemNode = node;
+    AVLNode* hook = node->right;
+    // AVLNode* temp = node;
+    node = hook;
+    hook->right = node;
+}
+void AVLTree::rotateRight(AVLNode *&node) {
+    AVLNode* hook = node->left;
+    node = hook;
+    node->left = node;
 }
 AVLTree::AVLTree() {
     root = nullptr;
+    size_ = 0;
     }
 AVLTree::AVLNode::AVLNode(const KeyType& k, const ValueType& v) {
     key = k;
@@ -131,9 +200,11 @@ AVLTree::AVLNode::AVLNode(const KeyType& k, const ValueType& v) {
 bool AVLTree::insert(const string& key, size_t value) {
     if (root == nullptr) {
         root = new AVLNode(key, value);
+        size_++;
         return true;
     }
        if ( insertKey(key, value, root)) {
+           size_++;
            return true;
        }
     return false;
@@ -171,6 +242,7 @@ bool AVLTree::insertKey(const KeyType &key, const ValueType &value, AVLNode *cur
 
 bool AVLTree::remove(const string &key) {
             if (remove(root, key)) {
+                size_--;
                 return true;
             }
     return false;
@@ -267,19 +339,34 @@ void AVLTree::findAllKeys(AVLNode* current, vector<string>& keys) const {
     findAllKeys(current->right, keys);
 }
 
-void AVLTree::operator=(const AVLTree &other) {
-
-}
 ostream& operator<<(ostream& os, const AVLTree& avlTree) {
     avlTree.print(os, avlTree.root);
     return os;
 }
 void AVLTree::print(ostream &os, AVLNode *current) const {
-    if (current->right == nullptr) {
+    if (current == nullptr) {
         return;
     }
     print(os, current->right);
-    os <<"{" << current->key<<":"<<current->value << "}";
-    if (current->left != nullptr)
+    os <<"{" << current->key<<":"<<current->value << "}" << endl;
     print(os, current->left);
+}
+size_t AVLTree::size() const {
+    return  size_;
+}
+
+// COPY CONSTRUCTOR
+AVLTree::AVLTree(const AVLTree &other) {
+    copyTree(other.root);
+}
+void AVLTree::copyTree(AVLNode *node)  {
+    if (!node) {
+        return;
+    }
+    insert(node->key, node->value);
+    copyTree(node->left);
+    copyTree(node->right);
+}
+void AVLTree::operator=(const AVLTree &other) {
+    copyTree(other.root);
 }

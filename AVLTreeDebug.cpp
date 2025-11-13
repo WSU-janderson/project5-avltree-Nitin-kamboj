@@ -14,10 +14,10 @@ using namespace std;
 int main() {
     AVLTree tree;
     bool insertResult;
-    insertResult = tree.insert("F", 'F');
-    cout << insertResult << endl;
-    insertResult = tree.insert("F", 'F'); // false, no duplicates allowed
-    cout << insertResult << endl;
+    // insertResult = tree.insert("F", 'F');
+    // cout << insertResult << endl;
+    // insertResult = tree.insert("F", 'F'); // false, no duplicates allowed
+    // cout << insertResult << endl;
     insertResult = tree.insert("K", 'K');
     cout << insertResult << endl;
     insertResult = tree.insert("B", 'B');// single rotate left
@@ -28,9 +28,15 @@ int main() {
     cout << insertResult << endl;
     insertResult = tree.insert("E", 'E');
     cout << insertResult << endl;
+    insertResult = tree.insert("F", 'F');
+    cout << size(tree) << endl;
+    cout << insertResult << endl;
     insertResult = tree.insert("M", 'M');
     cout << insertResult << endl;
     bool removeResult;
+    AVLTree newTree;
+    newTree = tree;
+    cout << newTree <<"hjvbjdsfnkabkjdbk"<< endl;
     // removeResult = tree.remove("F");
     // cout << removeResult << endl;
     // // removeResult = tree.remove("K");
@@ -52,9 +58,10 @@ int main() {
     cout << value << endl;
     tree["K"] = 70;
     cout << tree["K"] << endl;
-    value = tree["K"];
-    cout << value << endl;
-    cout << tree << endl;
+    // value = tree["K"];
+    // cout << value << endl;
+    // cout << tree << endl;
+    cout << size(tree) << endl;
     // cout << tree << endl;
     //
     // insertResult = tree.insert("C", 'C');
