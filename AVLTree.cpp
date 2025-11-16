@@ -175,24 +175,20 @@ void AVLTree::balanceNode(AVLNode *&node) {
 }
 void AVLTree::rotateLeft(AVLNode *&node) {
     AVLNode* problemNode = node;
-    AVLNode*& hook = node->right;
-    node->key = hook->key;
-    node->value = hook->value;
-    node->right = hook->left;
-    // AVLNode* temp = node;
+    AVLNode* hook = problemNode->right;
+    AVLNode* temp = hook->left;
+    problemNode->right = temp;
+    hook->left = problemNode;
+
     node = hook;
-    node->right = problemNode;
 }
 void AVLTree::rotateRight(AVLNode *&node) {
     AVLNode* problemNode = node;
-    AVLNode*& hook = node->left;
-    node->key = hook->key;
-    node->value = hook->value;
-    node->left = hook->left;
-    node->right = problemNode;
-    delete hook;
-    // node = hook;
-    // node->left = problemNode;
+    AVLNode* hook = node->left;
+    AVLNode* temp = hook->right;
+    problemNode->left = temp;
+    hook->right = problemNode;
+    node = hook;
 }
 AVLTree::AVLTree() {
     root = nullptr;
@@ -225,7 +221,7 @@ bool AVLTree::insert(const string& key, size_t value) {
        }
     return false;
 }
-bool AVLTree::insertKey(const KeyType &key, const ValueType &value, AVLNode *current) {
+bool AVLTree::insertKey(const KeyType &key, const ValueType &value, AVLNode *&current) {
     if (current->key == key) {
         return false;
     }

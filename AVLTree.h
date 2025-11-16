@@ -47,7 +47,7 @@ public:
     void copyTree(AVLNode* node) ;
     //INSERT
     bool insert(const string& key, size_t value);
-    bool insertKey(const KeyType& key, const ValueType& value, AVLNode* node);
+    bool insertKey(const KeyType& key, const ValueType& value, AVLNode*& node);
     //REMOVE
     bool remove(const string& key);
     //CONTAINS

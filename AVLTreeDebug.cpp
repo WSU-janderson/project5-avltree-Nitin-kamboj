@@ -54,15 +54,15 @@ int main() {
     removeResult = tree.remove("M");
     cout << removeResult << endl;
     cout << endl << endl;
-    int value = tree["K"];
-    cout << value << endl;
-    tree["K"] = 70;
-    cout << tree["K"] << endl;
-    value = tree["K"];
-    cout << value << endl;
-    cout << tree << endl;
-    cout << size(tree) << endl;
-    cout << tree << endl;
+    // int value = tree["K"];
+    // cout << value << endl;
+    // tree["K"] = 70;
+    // cout << tree["K"] << endl;
+    // value = tree["K"];
+    // cout << value << endl;
+    // cout << tree << endl;
+    // cout << size(tree) << endl;
+    // cout << tree << endl;
 
     insertResult = tree.insert("C", 'C');
     insertResult = tree.insert("A", 'A'); // single rotate right
