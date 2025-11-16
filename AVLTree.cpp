@@ -181,6 +181,10 @@ void AVLTree::rotateLeft(AVLNode *&node) {
     hook->left = problemNode;
 
     node = hook;
+    AVLNode* newHook = node->left;
+    newHook->height = newHook->getHeight();
+    node->height = node->getHeight();
+
 }
 void AVLTree::rotateRight(AVLNode *&node) {
     AVLNode* problemNode = node;
@@ -189,6 +193,9 @@ void AVLTree::rotateRight(AVLNode *&node) {
     problemNode->left = temp;
     hook->right = problemNode;
     node = hook;
+    problemNode->height = hook->getHeight();
+    node->height = node->getHeight();
+
 }
 AVLTree::AVLTree() {
     root = nullptr;
