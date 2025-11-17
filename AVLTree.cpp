@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 
+// This method is used to check the number of children for each member of tree.
 size_t AVLTree::AVLNode::numChildren() const {
     if (left != nullptr && right != nullptr) {
         return 2;
@@ -12,6 +13,7 @@ size_t AVLTree::AVLNode::numChildren() const {
     return 0;
 }
 
+// To check whether the given node has zero children or not
 bool AVLTree::AVLNode::isLeaf() const {
     if (left == nullptr && right == nullptr) {
         return true;
@@ -19,6 +21,7 @@ bool AVLTree::AVLNode::isLeaf() const {
     return false;
 }
 
+// To check the height of the node with O(1) complexity
 size_t AVLTree::AVLNode::getHeight() const {
     if(left == nullptr && right == nullptr) {
     return 0;
@@ -34,7 +37,7 @@ else {
 }
 }
 
-
+// This method is used to remove the node if the node is leaf , 1 child or 2 child.
 bool AVLTree::removeNode(AVLNode*& current){
     if (!current) {
         return false;
@@ -88,6 +91,7 @@ bool AVLTree::removeNode(AVLNode*& current){
     return true;
 }
 
+// This remove function is used to find the key to be removed and then if found go to removeNode function.
 bool AVLTree::remove(AVLNode *&current, KeyType key) {
     if (!current) {
         return false;
@@ -111,6 +115,7 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
         }
 }
 
+// This method is used to check the balance of nodes and do rotation on the basis of that.
 void AVLTree::balanceNode(AVLNode *&node) {
     int lheight;
     int rheight;
@@ -159,7 +164,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
         rrheight = -1;
     }
 
-
+// condition to check if the node to be rotated or not.
         if (lheight - rheight > 1 ) {
             if (llheight - lrheight < 0 ) {
                 rotateLeft(node->left);
@@ -173,6 +178,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
             rotateLeft(node);
     }
 }
+// Left rotation method is used to do the left rotation of node.
 void AVLTree::rotateLeft(AVLNode *&node) {
     AVLNode* problemNode = node;
     AVLNode* hook = problemNode->right;
@@ -186,6 +192,7 @@ void AVLTree::rotateLeft(AVLNode *&node) {
     node->height = node->getHeight();
 
 }
+// Right rotation is used to do the right rotation of node.
 void AVLTree::rotateRight(AVLNode *&node) {
     AVLNode* problemNode = node;
     AVLNode* hook = node->left;
@@ -193,14 +200,17 @@ void AVLTree::rotateRight(AVLNode *&node) {
     problemNode->left = temp;
     hook->right = problemNode;
     node = hook;
-    problemNode->height = hook->getHeight();
+    AVLNode* newHook = node->right;
+    newHook->height = newHook->getHeight();
     node->height = node->getHeight();
 
 }
+// This is default constructor.
 AVLTree::AVLTree() {
     root = nullptr;
     size_ = 0;
     }
+// Constructor of AVLNode to store its values.
 AVLTree::AVLNode::AVLNode(const KeyType& k, const ValueType& v) {
     key = k;
     value = v;
@@ -213,9 +223,7 @@ AVLTree::AVLNode::AVLNode(const KeyType& k, const ValueType& v) {
 
 
 
-
-// functions created
-
+// This method is used to insert the key using calling insertKey method and insert directly if root is nullptr and the size increment by 1.
 bool AVLTree::insert(const string& key, size_t value) {
     if (root == nullptr) {
         root = new AVLNode(key, value);
@@ -228,10 +236,13 @@ bool AVLTree::insert(const string& key, size_t value) {
        }
     return false;
 }
+
+// This is the recursive method of insert to insert the key if there is no duplication and set the height.
 bool AVLTree::insertKey(const KeyType &key, const ValueType &value, AVLNode *&current) {
     if (current->key == key) {
         return false;
     }
+    // check the condition whether the given key is greater or not and go right and left on the basis of that.
     if (key > current->key) {
         if (current->right == nullptr) {
             current->right = new AVLNode(key, value);
@@ -261,6 +272,7 @@ bool AVLTree::insertKey(const KeyType &key, const ValueType &value, AVLNode *&cu
     }
 }
 
+// This method is only used to call remove function that works recursively to find tha key for removal and do size--;
 bool AVLTree::remove(const string &key) {
             if (remove(root, key)) {
                 size_--;
@@ -268,6 +280,8 @@ bool AVLTree::remove(const string &key) {
             }
     return false;
         }
+// To check whether the given key is the tree or not
+// return boolean type
 bool AVLTree::contains(const string &key) {
     AVLNode* current = root;
     while (current != nullptr) {
@@ -283,6 +297,7 @@ bool AVLTree::contains(const string &key) {
     }
     return false;
 }
+// return the value of the given key if found or else return nullopt.
 optional<size_t> AVLTree::get(const string &key) {
     AVLNode* current = root;
     while (current != nullptr) {
@@ -298,6 +313,7 @@ optional<size_t> AVLTree::get(const string &key) {
     }
     return std::nullopt;
 }
+// The bracket operator, operator[], allows us to use our map the same way various programming languages such as C++ and Python allow us to use keys to access values.
 size_t &AVLTree::operator[](const string &key) {
     AVLNode* current = root;
     while (current != nullptr) {
@@ -314,12 +330,14 @@ size_t &AVLTree::operator[](const string &key) {
     throw std::runtime_error("Key not found in AVLTree");
 }
 
+// This method is used to call findrangeKeys function that works recurisvely to return the values in that particular range.
 vector<size_t> AVLTree::findRange(const KeyType &lowKey, const KeyType &highKey) {
     vector<size_t> keys;
     findRangeKeys(root,highKey,lowKey,keys);
     return keys;
 }
 
+// returns the value that are between the high and low keys recurisvely.
 void AVLTree::findRangeKeys(AVLNode* rootKey, const KeyType &highKey,const KeyType &lowkey, vector<ValueType> &keys) {
     if (rootKey == nullptr) {
         return;
@@ -331,15 +349,15 @@ void AVLTree::findRangeKeys(AVLNode* rootKey, const KeyType &highKey,const KeyTy
     findRangeKeys(rootKey->right, highKey, lowkey, keys);
 
 }
-
-
-
+// The keys() method will return a std::vector with all of the keys currently in the tree. The length of the vector should be the same as the size of the tree
 vector<string> AVLTree::keys() const {
     AVLNode* current = root;
     vector<string> keys ;
     findAllKeys(current, keys);
     return keys;
 }
+
+// This wroks recursively to find all keys of the trees and push back in the keys vectors.
 void AVLTree::findAllKeys(AVLNode* current, vector<string>& keys) const {
     if (current == nullptr) {
         return;
@@ -361,14 +379,19 @@ void AVLTree::print(ostream &os, AVLNode *current) const {
     os <<"{" << current->key<<":"<<current->value << "}" << endl;
     print(os, current->left);
 }
+// The size() method returns how many key-value pairs are in the tree.
+// The time complexity for this method must be 𝒪︀(1).
 size_t AVLTree::size() const {
     return  size_;
 }
 
 // COPY CONSTRUCTOR
 AVLTree::AVLTree(const AVLTree &other) {
+    root = nullptr;
+    size_ = 0;
     copyTree(other.root);
 }
+// this method copies all the keys and values to new tree uses insert method  and works recusively.
 void AVLTree::copyTree(AVLNode *node)  {
     if (!node) {
         return;
@@ -377,14 +400,18 @@ void AVLTree::copyTree(AVLNode *node)  {
     copyTree(node->left);
     copyTree(node->right);
 }
+// operator == function create a deep copy of the other tree. The main difference is the tree we want to copy into may already have had elements inserted, so that memory needs to be released.
 void AVLTree::operator=(const AVLTree &other) {
     copyTree(other.root);
 }
+// descructor
 AVLTree::~AVLTree() {
     clear(root);
     root = nullptr;
     size_ = 0;
 }
+
+// this method is used to clear the tree
 void AVLTree::clear(AVLNode *&node) {
     if (node == nullptr) {
         return;
@@ -393,6 +420,10 @@ void AVLTree::clear(AVLNode *&node) {
     clear(node->right);
     delete node;
 }
+// this method is used to return the height of node in O(1) complexity.
 size_t AVLTree::getHeight() const {
+    if (root == nullptr) {
+        return 0;
+    }
     return root->height;
 }
