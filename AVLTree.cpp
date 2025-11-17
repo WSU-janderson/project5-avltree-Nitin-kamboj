@@ -402,6 +402,10 @@ void AVLTree::copyTree(AVLNode *node)  {
 }
 // operator == function create a deep copy of the other tree. The main difference is the tree we want to copy into may already have had elements inserted, so that memory needs to be released.
 void AVLTree::operator=(const AVLTree &other) {
+    if (this == &other) return;
+    clear(root);
+    root = nullptr;
+    size_ = 0;
     copyTree(other.root);
 }
 // descructor
