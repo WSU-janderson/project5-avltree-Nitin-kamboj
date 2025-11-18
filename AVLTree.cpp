@@ -368,16 +368,19 @@ void AVLTree::findAllKeys(AVLNode* current, vector<string>& keys) const {
 }
 
 ostream& operator<<(ostream& os, const AVLTree& avlTree) {
-    avlTree.print(os, avlTree.root);
+    avlTree.print(os, avlTree.root, 0);
     return os;
 }
-void AVLTree::print(ostream &os, AVLNode *current) const {
+void AVLTree::print(ostream &os, AVLNode *current, int depth) const {
     if (current == nullptr) {
         return;
     }
-    print(os, current->right);
+    print(os, current->right , depth + 1);
+    for (int i =0 ; i< depth; i++) {
+        os << "  ";
+    }
     os <<"{" << current->key<<":"<<current->value << "}" << endl;
-    print(os, current->left);
+    print(os, current->left, depth + 1);
 }
 // The size() method returns how many key-value pairs are in the tree.
 // The time complexity for this method must be 𝒪︀(1).

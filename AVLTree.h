@@ -66,7 +66,7 @@ public:
     // size_t  getHeight() const;
     void operator=(const AVLTree& other);
     friend ostream& operator<<(ostream& os, const AVLTree& avlTree);
-    void print(ostream& os , AVLNode* current) const;
+    void print(ostream& os , AVLNode* current, int depth) const;
 
 
 
