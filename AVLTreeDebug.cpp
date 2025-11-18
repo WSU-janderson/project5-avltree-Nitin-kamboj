@@ -3,6 +3,12 @@ Driver code for testing your AVL Tree
 This is NOT the test code for grading,
 instead for you to get an idea of how to test the tree
  */
+// Author: Nitin kamboj
+/* Description:
+ * This file contains the implementation of an AVL Tree, a self-balancing binary search tree.
+ * The AVL Tree automatically maintains balance by performing rotations (single and double) during insertions and deletions.
+ * Each node stores a key, value, height, and pointers to left and right children.
+ */
 #include "AVLTree.h"
 #include <iostream>
 #include <string>
