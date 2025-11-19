@@ -282,7 +282,7 @@ bool AVLTree::remove(const string &key) {
         }
 // To check whether the given key is the tree or not
 // return boolean type
-bool AVLTree::contains(const string &key) {
+bool AVLTree::contains(const string &key) const {
     AVLNode* current = root;
     while (current != nullptr) {
         if (current->key == key) {
@@ -377,7 +377,7 @@ void AVLTree::print(ostream &os, AVLNode *current, int depth) const {
     }
     print(os, current->right , depth + 1);
     for (int i =0 ; i< depth; i++) {
-        os << "  ";
+        os << "     ";
     }
     os <<"{" << current->key<<":"<<current->value << "}" << endl;
     print(os, current->left, depth + 1);

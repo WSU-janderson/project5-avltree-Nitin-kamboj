@@ -51,7 +51,7 @@ public:
     //REMOVE
     bool remove(const string& key);
     //CONTAINS
-    bool contains(const string& key);
+    bool contains(const string& key) const;
     //GET
     optional< size_t> get(const string& key);
     //[] operator
